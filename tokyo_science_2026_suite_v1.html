@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0">
+<title>東京科学大学 2026 重要構文 自習スイート</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Serif+JP:wght@400;700&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --univ-primary:#1C3177;--univ-dark:#0F1E4D;--univ-sub:#7F96C2;
+  --gold:#C9A84C;--gold-light:#E8CC7A;
+  --bg:#0D0D0D;--bg-card:#151515;--bg-inner:#1C1C1C;
+  --border:#282828;--border2:#333333;
+  --text:#E8E3D8;--text-sub:#E8E3D8;--text-dim:rgba(232,227,216,.75);
+  --s:#FF6B35;--v:#1E88E5;--o:#FFC107;--c:#43A047;
+  --adv:#B39DDB;--adj:#FFC0CB;--conj:#FFF44F;--rel:#8E24AA;
+  --ok:#2E7D32;--ok2:#43A047;--redo:#E65100;
+  --cl-s:#FF6B35;--cl-o:#C9A84C;--cl-rel:#F48FB1;--cl-adv:#B39DDB;--cl-noun:#E53935;
+  --tl-color:#E8E3D8;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Source Serif 4','Noto Serif JP',Georgia,serif;line-height:1.75;-webkit-font-smoothing:antialiased;}
+::selection{background:rgba(127,150,194,.35);}
+
+/* ══════════════════ HEADER ══════════════════ */
+.header{background:linear-gradient(135deg,var(--univ-primary) 0%,var(--univ-dark) 100%);padding:1.8rem 1.2rem 1.4rem;position:relative;overflow:hidden;}
+.header::before{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0px,rgba(255,255,255,.03) 1px,transparent 1px,transparent 26px);pointer-events:none;}
+.header-inner{max-width:780px;margin:0 auto;position:relative;z-index:1;}
+.header-univ{font-family:'Playfair Display',serif;font-weight:900;font-size:.78rem;letter-spacing:.28em;color:var(--univ-sub);margin-bottom:.35rem;}
+.header-dept{font-family:'Noto Serif JP',serif;font-size:.92rem;font-weight:500;color:rgba(255,255,255,.8);margin-bottom:.7rem;letter-spacing:.02em;line-height:1.6;}
+.dept-main{font-size:1.25rem;font-weight:700;color:#FFF;letter-spacing:.03em;}
+.header-band{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem;}
+.dept-badge,.year-badge,.count-badge{font-family:'JetBrains Mono',monospace;font-size:.68rem;padding:.28rem .7rem;border-radius:20px;letter-spacing:.04em;}
+.dept-badge{background:rgba(224,117,74,.15);color:#F0A480;border:1px solid rgba(224,117,74,.4);}
+.year-badge{background:rgba(201,168,76,.15);color:var(--gold-light);border:1px solid rgba(201,168,76,.4);}
+.count-badge{background:rgba(255,255,255,.08);color:#FFF;border:1px solid rgba(255,255,255,.3);}
+.search-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.7rem;}
+.search-input{flex:1;min-width:200px;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.18);border-radius:4px;padding:.55rem .8rem;color:#FFF;font-family:'Noto Serif JP',serif;font-size:.82rem;}
+.search-input::placeholder{color:rgba(255,255,255,.4);}
+.search-input:focus{outline:none;border-color:var(--univ-sub);}
+.ctrl-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.22);border-radius:4px;padding:.5rem 1rem;color:rgba(255,255,255,.85);font-family:'Noto Serif JP',serif;font-size:.76rem;cursor:pointer;transition:all .15s;white-space:nowrap;}
+.ctrl-btn:hover{background:rgba(255,255,255,.13);}
+.ctrl-btn.active{background:var(--univ-sub);color:var(--univ-dark);border-color:var(--univ-sub);font-weight:700;}
+.tab-section{margin-bottom:.7rem;}
+.tab-section-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:rgba(255,255,255,.5);letter-spacing:.1em;margin-bottom:.4rem;}
+.tab-row{display:flex;gap:.4rem;flex-wrap:wrap;}
+.tab-btn{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:.32rem .8rem;font-size:.72rem;color:rgba(255,255,255,.75);cursor:pointer;font-family:'Noto Serif JP',serif;transition:all .15s;}
+.tab-btn:hover{background:rgba(255,255,255,.12);}
+.tab-btn.active{background:var(--gold);color:#241a00;border-color:var(--gold);font-weight:700;}
+.mode-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.6rem;}
+#modeVisual{border-color:rgba(255,255,255,.5);letter-spacing:.02em;}
+#modeVisual.visual-active{background:rgba(255,255,255,.92)!important;color:var(--univ-dark)!important;border-color:#FFF!important;font-weight:900!important;}
+.hint-text{font-family:'Noto Serif JP',serif;font-size:.7rem;color:rgba(255,255,255,.55);line-height:1.7;}
+
+/* ══════════════════ DASHBOARD ══════════════════ */
+.dashboard{max-width:780px;margin:1rem auto 0;padding:0 1rem;}
+.dash-box{background:var(--bg-card);border:1px solid var(--border2);border-top:2px solid var(--univ-sub);border-radius:4px;padding:.9rem 1.1rem;}
+.dash-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:.55rem;flex-wrap:wrap;gap:.4rem;}
+.dash-label{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--univ-sub);letter-spacing:.1em;}
+.dash-count{font-family:'Noto Serif JP',serif;font-size:.82rem;color:var(--text-sub);}
+.dash-count span{color:var(--gold-light);font-weight:700;}
+.progress-bar-wrap{background:var(--bg-inner);border-radius:6px;height:8px;overflow:hidden;margin-bottom:.7rem;}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--univ-sub),var(--gold));border-radius:6px;transition:width .3s;}
+.dash-chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-bottom:.6rem;}
+.dash-chip{display:flex;align-items:center;gap:.25rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--text-dim);}
+.chip-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);}
+.chip-dot.mastered{background:var(--ok2);}
+.chip-dot.needs-review{background:var(--redo);}
+.dash-reset{background:none;border:1px solid var(--border2);border-radius:4px;padding:.35rem;cursor:pointer;font-family:'Noto Serif JP',serif;font-size:.72rem;color:var(--text-dim);transition:all .2s;width:100%;}
+.dash-reset:hover{border-color:rgba(255,255,255,.22);color:var(--text-sub);}
+
+/* ══════════════════ LEGEND ══════════════════ */
+.legend-wrap{max-width:780px;margin:.8rem auto 0;padding:0 1rem;}
+.legend-box{background:var(--bg-card);border:1px solid var(--border2);border-top:2px solid var(--gold);border-radius:4px;padding:.85rem 1.1rem;}
+.legend-label{font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--gold);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.65rem;}
+.legend-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem;}
+@media(max-width:400px){.legend-grid{grid-template-columns:repeat(2,1fr);}}
+.legend-item{display:flex;align-items:center;gap:.3rem;font-size:.75rem;color:var(--text-sub);}
+.lchip{display:inline-block;width:12px;height:12px;border-radius:3px;flex-shrink:0;}
+
+/* ══════════════════ CONTENT / CASE CARD ══════════════════ */
+.content{max-width:780px;margin:0 auto;padding:1.2rem 1rem 3rem;}
+.part-heading{display:flex;align-items:baseline;gap:.7rem;margin:2.2rem 0 1rem;padding-bottom:.6rem;border-bottom:2px solid var(--univ-sub);}
+.part-heading:first-child{margin-top:.4rem;}
+.part-roman{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:var(--univ-sub);}
+.part-title{font-family:'Noto Serif JP',serif;font-size:.92rem;color:var(--text-sub);line-height:1.5;}
+.part-title strong{display:block;color:var(--text);font-size:1rem;font-weight:700;}
+
+.case-card{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;margin-bottom:1.1rem;overflow:hidden;transition:opacity .3s,filter .3s;}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;gap:.6rem;background:var(--bg-inner);padding:.75rem 1rem;border-bottom:1px solid var(--border);}
+.card-head-left{flex:1;}
+.case-num{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.95rem;font-weight:700;color:var(--univ-dark);background:var(--gold);padding:.15rem .6rem;border-radius:4px;letter-spacing:.06em;margin-bottom:.4rem;}
+.case-title{font-family:'Noto Serif JP',serif;font-size:.92rem;font-weight:700;color:var(--text);margin-bottom:.15rem;}
+.case-title-en{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--text-dim);margin-bottom:.4rem;}
+.case-meta-row{display:flex;gap:.35rem;flex-wrap:wrap;align-items:center;}
+.mondai-badge{font-family:'JetBrains Mono',monospace;font-size:.62rem;padding:.15rem .55rem;border-radius:10px;background:rgba(224,117,74,.15);color:#F0A480;border:1px solid rgba(224,117,74,.35);}
+.case-ref{font-size:.68rem;color:var(--text-dim);}
+.level-badge{font-family:'JetBrains Mono',monospace;font-size:.62rem;padding:.15rem .55rem;border-radius:10px;background:rgba(201,168,76,.12);color:var(--gold-light);border:1px solid rgba(201,168,76,.3);}
+.status-badge{font-size:.62rem;font-family:'JetBrains Mono',monospace;padding:.1rem .5rem;border-radius:10px;}
+.status-badge.mastered{background:rgba(67,160,71,.18);color:#7CD98A;border:1px solid rgba(67,160,71,.4);}
+.status-badge.needs-review{background:rgba(230,81,0,.18);color:#FFA366;border:1px solid rgba(230,81,0,.4);}
+.card-actions{flex-shrink:0;}
+.act-btn{background:none;border:1px solid var(--border2);border-radius:4px;padding:.3rem .65rem;font-size:.68rem;color:var(--text-dim);cursor:pointer;font-family:'Noto Serif JP',serif;}
+.act-btn:hover{border-color:var(--univ-sub);color:var(--univ-sub);}
+
+.case-source{padding:.5rem 1rem;font-size:.68rem;color:var(--text-dim);border-bottom:1px dashed var(--border);}
+.src-label{color:var(--gold);margin-right:.4rem;font-family:'JetBrains Mono',monospace;font-size:.62rem;}
+
+.card-body{padding:1rem 1.1rem 1.1rem;}
+.english-text{font-family:'Source Serif 4',serif;font-size:1.08rem;line-height:2.05;color:var(--text);margin-bottom:.9rem;}
+
+.card-visual-toggle{margin-bottom:.7rem;}
+.card-toggle-btn{background:linear-gradient(135deg,var(--univ-primary),var(--univ-dark));border:1px solid var(--univ-sub);border-radius:20px;padding:.45rem 1rem;font-family:'Noto Serif JP',serif;font-size:.76rem;font-weight:700;color:#FFF;cursor:pointer;transition:all .18s;letter-spacing:.02em;}
+.card-toggle-btn:hover{filter:brightness(1.15);transform:translateY(-1px);}
+.card-toggle-btn.is-plain{background:rgba(255,255,255,.94);color:var(--univ-dark);border-color:#FFF;}
+
+/* カード単位の白文モード（個別トグル） */
+.case-card.card-plain .english-text .s,
+.case-card.card-plain .english-text .v,
+.case-card.card-plain .english-text .o,
+.case-card.card-plain .english-text .c,
+.case-card.card-plain .english-text .adv,
+.case-card.card-plain .english-text .adj,
+.case-card.card-plain .english-text .conj,
+.case-card.card-plain .english-text .rel{color:var(--text)!important;font-weight:400!important;font-style:normal!important;background:none!important;}
+.case-card.card-plain .english-text .cl-s,
+.case-card.card-plain .english-text .cl-o,
+.case-card.card-plain .english-text .cl-rel,
+.case-card.card-plain .english-text .cl-adv,
+.case-card.card-plain .english-text .cl-noun{border-bottom:none!important;padding-bottom:0!important;}
+.english-text .s{color:var(--s);font-weight:600;}
+.english-text .v{color:var(--v);font-weight:600;}
+.english-text .o{color:var(--o);font-weight:600;}
+.english-text .c{color:var(--c);font-weight:600;}
+.english-text .adv{color:var(--adv);font-style:italic;}
+.english-text .adj{color:var(--adj);}
+.english-text .conj{color:var(--conj);font-weight:600;}
+.english-text .rel{color:var(--rel);font-weight:600;}
+.english-text .cl-s{border-bottom:2px solid var(--cl-s);padding-bottom:1px;}
+.english-text .cl-o{border-bottom:2px solid var(--cl-o);padding-bottom:1px;}
+.english-text .cl-rel{border-bottom:2px solid var(--cl-rel);padding-bottom:1px;}
+.english-text .cl-adv{border-bottom:2px solid var(--cl-adv);padding-bottom:1px;}
+.english-text .cl-noun{border-bottom:2px solid var(--cl-noun);padding-bottom:1px;}
+
+.audio-player{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;background:var(--bg-inner);border:1px solid var(--border);border-radius:5px;padding:.5rem .7rem;margin-bottom:.8rem;}
+.audio-label{font-size:.68rem;color:var(--text-dim);white-space:nowrap;}
+.audio-player audio{flex:1;min-width:180px;height:32px;border-radius:16px;accent-color:var(--gold);}
+
+.reveal-details{border:1px solid var(--border);border-radius:5px;margin-bottom:.6rem;overflow:hidden;}
+.reveal-summary{cursor:pointer;padding:.6rem .85rem;font-family:'Noto Serif JP',serif;font-size:.8rem;font-weight:700;color:var(--text-sub);background:var(--bg-inner);list-style:none;transition:background .15s;}
+.reveal-summary::-webkit-details-marker{display:none;}
+.reveal-summary:hover{background:#232323;}
+.reveal-details[open] .reveal-summary{border-bottom:1px solid var(--border);}
+.reveal-inner{padding:.9rem .95rem;}
+.translation{font-family:'Noto Serif JP',serif;font-size:.88rem;color:var(--tl-color);line-height:1.95;background:var(--bg-inner);padding:.8rem .9rem;border-left:3px solid var(--univ-sub);border-radius:0 4px 4px 0;}
+
+.box-details{border:1px solid var(--border);border-radius:5px;margin-bottom:.6rem;overflow:hidden;}
+.box-summary{cursor:pointer;padding:.5rem .8rem;font-family:'Noto Serif JP',serif;font-size:.76rem;font-weight:700;color:var(--gold-light);background:var(--bg-inner);list-style:none;}
+.box-summary::-webkit-details-marker{display:none;}
+.imp-box{background:#241d10;border-top:2px solid var(--gold);padding:.9rem .95rem;}
+.imp-label{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--gold);letter-spacing:.08em;margin-bottom:.5rem;}
+.imp-box p{font-size:.85rem;line-height:1.85;color:var(--text);}
+.imp-box em{font-style:normal;}
+.imp-box strong{color:var(--gold-light);}
+
+.logic-box{background:#101c24;border-top:2px solid var(--v);padding:.9rem .95rem;}
+.logic-label{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--v);letter-spacing:.08em;margin-bottom:.5rem;}
+.logic-formula{font-family:'JetBrains Mono',monospace;font-size:.76rem;line-height:1.95;color:#B8CBEE;white-space:pre-wrap;background:rgba(0,0,0,.25);padding:.75rem .85rem;border-radius:4px;margin-bottom:.6rem;overflow-x:auto;}
+.logic-box p{font-size:.84rem;line-height:1.85;color:var(--text);}
+
+.selfcheck{background:var(--bg-inner);border-top:2px solid var(--text-dim);padding:.85rem .95rem;}
+.selfcheck-title{font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--text-sub);letter-spacing:.08em;margin-bottom:.5rem;}
+.selfcheck ul{list-style:none;}
+.selfcheck li{font-size:.8rem;color:var(--text-sub);padding:.25rem 0 .25rem 1.1rem;position:relative;line-height:1.6;}
+.selfcheck li::before{content:"›";position:absolute;left:0;color:var(--univ-sub);}
+
+.prog-btns{display:flex;gap:.5rem;margin-top:.2rem;}
+.prog-btn{flex:1;padding:.55rem;border-radius:5px;border:1px solid var(--border2);background:var(--bg-inner);color:var(--text-sub);font-family:'Noto Serif JP',serif;font-size:.78rem;cursor:pointer;transition:all .15s;}
+.prog-btn.prog-ok:hover,.prog-btn.prog-ok.on{background:rgba(67,160,71,.18);color:#7CD98A;border-color:rgba(67,160,71,.5);}
+.prog-btn.prog-redo:hover,.prog-btn.prog-redo.on{background:rgba(230,81,0,.18);color:#FFA366;border-color:rgba(230,81,0,.5);}
+
+/* ── MODE CLASSES ── */
+body.mode-english .reveal-jp,body.mode-english .reveal-exp{display:none!important;}
+body.mode-plain .english-text .s,
+body.mode-plain .english-text .v,
+body.mode-plain .english-text .o,
+body.mode-plain .english-text .c,
+body.mode-plain .english-text .adv,
+body.mode-plain .english-text .adj,
+body.mode-plain .english-text .conj,
+body.mode-plain .english-text .rel{color:var(--text)!important;font-weight:400!important;font-style:normal!important;background:none!important;}
+body.mode-plain .english-text .cl-s,
+body.mode-plain .english-text .cl-o,
+body.mode-plain .english-text .cl-rel,
+body.mode-plain .english-text .cl-adv,
+body.mode-plain .english-text .cl-noun{border-bottom:none!important;padding-bottom:0!important;}
+
+body.mode-blind .english-text{filter:blur(7px);cursor:pointer;transition:filter .2s;}
+body.mode-blind .english-text.unblurred{filter:none;}
+body.mode-blind .english-text::after{content:"（タップで解除）";font-weight:700;color:var(--text-dim);margin-left:.5em;}
+body.mode-blind .english-text.unblurred::after{display:none;}
+
+body.focusing .case-card{opacity:.3;filter:saturate(.5);}
+body.focusing .case-card.focused{opacity:1;filter:none;outline:2px solid rgba(127,150,194,.4);}
+
+.no-results{text-align:center;padding:2.5rem;font-family:'Noto Serif JP',serif;font-size:.9rem;color:var(--text-dim);display:none;}
+
+footer{text-align:center;padding:1.6rem 1rem 2.4rem;font-size:.68rem;color:var(--text-dim);font-family:'JetBrains Mono',monospace;border-top:1px solid var(--border);}
+footer p{margin-bottom:.3rem;}
+
+@media print{.header,.dashboard,.legend-wrap,.card-actions,.prog-btns,.audio-player,.card-visual-toggle{display:none!important;}body{background:#FFF;color:#000;}.case-card{box-shadow:none;break-inside:avoid;border:1px solid #CCC;}}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ HEADER ══════════════════ -->
+<header class="header">
+  <div class="header-inner">
+    <div class="header-univ">TOKYO INSTITUTE OF SCIENCE</div>
+    <div class="header-dept"><span class="dept-main">東京科学大学</span><br>2026年度前期日程 ／ 重要構文ビジュアル解析 厳選20題</div>
+    <div class="header-band">
+      <span class="dept-badge">令和8年度 前期日程</span>
+      <span class="year-badge">2026年度</span>
+      <span class="count-badge">厳選 20 Cases</span>
+    </div>
+    <div class="search-row">
+      <input id="searchInput" class="search-input" placeholder="キーワード検索（例：相関語句 / 比較 / 関係詞 / 分詞構文 / 不定詞）">
+      <button type="button" class="ctrl-btn" id="btnAll">ALL</button>
+      <button type="button" class="ctrl-btn" id="btnShuffle">🔀 シャッフル3枚</button>
+    </div>
+    <div class="tab-section">
+      <div class="tab-section-label">📂 カテゴリーで絞り込む</div>
+      <div class="tab-row" id="tagBar"></div>
+    </div>
+    <div class="mode-row">
+      <button type="button" class="ctrl-btn active" id="modeNormal">通常</button>
+      <button type="button" class="ctrl-btn" id="modeEnglish">英文のみ</button>
+      <button type="button" class="ctrl-btn" id="modeBlind">暗記テスト（ぼかし）</button>
+      <button type="button" class="ctrl-btn" id="btnShowAll">和訳・解説を全表示</button>
+      <button type="button" class="ctrl-btn" id="btnHideAll">全て隠す</button>
+    </div>
+    <div class="mode-row">
+      <button type="button" class="ctrl-btn" id="modeVisual">⬜ 白文表示　→　🎨 ビジュアル分析（クリックで切り替え）</button>
+    </div>
+    <div class="hint-text">①各ケースの「⬜白文 → 🎨カラー化」ボタンでその場で自力分析 → ②答え合わせ → ③日本語訳で意味確認 → ④🔊音声で仕上げ → ⑤解説の構造図で論理を追う → ⑥理解度を記録</div>
+  </div>
+</header>
+
+<!-- ══════════════════ DASHBOARD ══════════════════ -->
+<div class="dashboard">
+  <div class="dash-box">
+    <div class="dash-top">
+      <div class="dash-label">📊 学習進捗</div>
+      <div class="dash-count">理解済み <span id="masteredCount">0</span> / <span id="totalCount">20</span></div>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar" style="width:0%"></div></div>
+    <div class="dash-chips" id="dashChips"></div>
+    <button type="button" class="dash-reset" onclick="resetAll()">↺ すべての進捗をリセット</button>
+  </div>
+</div>
+
+<!-- ══════════════════ LEGEND ══════════════════ -->
+<div class="legend-wrap">
+  <div class="legend-box">
+    <div class="legend-label">🎨 カラーコード凡例（5文型 S-V-O-C）</div>
+    <div class="legend-grid">
+      <div class="legend-item"><span class="lchip" style="background:var(--s)"></span>S 主語</div>
+      <div class="legend-item"><span class="lchip" style="background:var(--v)"></span>V 動詞</div>
+      <div class="legend-item"><span class="lchip" style="background:var(--o)"></span>O 目的語</div>
+      <div class="legend-item"><span class="lchip" style="background:var(--c)"></span>C 補語</div>
+      <div class="legend-item"><span class="lchip" style="background:var(--adv)"></span>副詞（句）</div>
+      <div class="legend-item"><span class="lchip" style="background:var(--adj)"></span>形容詞（句）</div>
+      <div class="legend-item"><span class="lchip" style="background:var(--conj)"></span>接続詞</div>
+      <div class="legend-item"><span class="lchip" style="background:var(--rel)"></span>関係詞</div>
+    </div>
+    <div class="legend-item" style="width:100%;margin-top:.55rem;padding-top:.5rem;border-top:1px solid var(--border2);font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--text-dim);letter-spacing:.08em;">── 節の機能（アンダーライン色） ──</div>
+    <div class="legend-grid" style="margin-top:.45rem;">
+      <div class="legend-item"><span style="border-bottom:2px solid var(--cl-s);padding-bottom:1px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--cl-s);">S節</span>&nbsp;主語節</div>
+      <div class="legend-item"><span style="border-bottom:2px solid var(--cl-o);padding-bottom:1px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--cl-o);">O節</span>&nbsp;目的語節</div>
+      <div class="legend-item"><span style="border-bottom:2px solid var(--cl-rel);padding-bottom:1px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--cl-rel);">Adj節</span>&nbsp;形容詞節</div>
+      <div class="legend-item"><span style="border-bottom:2px solid var(--cl-adv);padding-bottom:1px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--cl-adv);">Adv節</span>&nbsp;副詞節</div>
+      <div class="legend-item"><span style="border-bottom:2px solid var(--cl-noun);padding-bottom:1px;font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--cl-noun);">名詞節</span>&nbsp;名詞節（that/what等）</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ CONTENT ══════════════════ -->
+<div class="content" id="cardContainer">
+
+
+<div class="part-heading">
+  <span class="part-roman">Ⅰ</span>
+  <div class="part-title">
+    <strong>科学とバイアス</strong>
+    Camilla Pang, <em>Breakthrough: How to Think Like a Scientist</em>（2025）より
+  </div>
+</div>
+
+<!-- ===== CASE 01 ===== -->
+<article class="case-card" id="card-1" data-tags="並列・同格構文">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 01</div>
+    <div class="case-title">長い主語を見抜く（二重主語 the way ... the way ...）</div>
+    <div class="case-title-en">Two Parallel Noun Clauses as Subject</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅰ</span>
+      <span class="case-ref">第1段落｜科学とバイアスの序論</span>
+      <span class="level-badge">構文レベル：★★★★☆</span>
+      <span class="status-badge" id="badge-1"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(1)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅰ 第1段落</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-1" onclick="toggleCardVisual(1)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-1">
+      <span class="cl-s"><span class="s">The way</span> an experiment is conceived, designed, measured and carried out</span>,
+<span class="cl-s"><span class="s">the way</span> its results are interpreted and presented</span>,
+<span class="v">are</span> <span class="c">all places in which personal and technical bias can and does creep in</span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-1.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">実験がどのように考案され、計画され、測定され、実行されるか、その結果がどのように解釈され発表されるか、そのすべての過程が、個人的・技術的バイアスが忍び込みうる（そして実際に忍び込む）場所なのである。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p><em><strong>The way S+V ...</strong></em>という名詞節が <strong>2つコンマで並列</strong>され、それ全体が主語。動詞 <em><strong>are</strong></em> にたどり着くまで「まだ主語の途中かもしれない」という不安に耐える必要がある。長い主語の後にコンマが2つ連続しても、対応する動詞は1つだけという発想が鍵。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">The way (S+V が実験の実施段階を説明)
+  + the way (S+V が結果の解釈段階を説明)
+  ← 2つの名詞節が並列主語
+
+are all places
+  in which personal and technical bias
+  can and does creep in（関係代名詞節）
+
+↑ 実験の「実施」と「解釈」という2段階の
+   どちらにもバイアスが忍び込むと主張</div>
+        <p>the way (that) S+V は「Sが～するやり方」という名詞節を作る決まり文句。実験のプロセス全体を「実施段階」と「解釈段階」に分けて名詞化し、両方を主語に立てることで「バイアスはあらゆる段階に潜む」という主張を文構造そのもので体現している。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>2つの the way 節がどちらも主語であることを説明できる？</li><li>動詞 are がどこにあるかすぐに見つけられる？</li><li>in which の関係詞節が何を修飾しているか説明できる？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(1,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(1,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+<!-- ===== CASE 02 ===== -->
+<article class="case-card" id="card-2" data-tags="分詞構文">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 02</div>
+    <div class="case-title">譲歩節と付帯状況のwithを外して骨格を取る</div>
+    <div class="case-title-en">While-clause + with-construction Stripped Away</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅰ</span>
+      <span class="case-ref">第2段落｜人間の願望的思考</span>
+      <span class="level-badge">構文レベル：★★★☆☆</span>
+      <span class="status-badge" id="badge-2"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(2)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅰ 第2段落</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-2" onclick="toggleCardVisual(2)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-2">
+      <span class="cl-adv"><span class="conj">While</span> <span class="s">scientific rigour</span> <span class="v">should guard</span> against this</span>,
+<span class="s">even trained professionals</span> <span class="v">can fall</span> <span class="o">into this trap</span>,
+<span class="cl-adv">with <span class="o">results</span> ranging from mistaken observations to dubious interpretations and experiments that were skewed by their very design</span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-2.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">科学的な厳密さはこれを防ぐはずだが、訓練を積んだ専門家でさえこの罠に陥ることがあり、その結果は誤った観察から疑わしい解釈、さらにはその設計自体によって歪められた実験にまで及ぶ。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p><em><strong>While節（譲歩）</strong></em>と<em><strong>with構文（付帯状況）</strong></em>という2つの修飾要素をいったん括弧に入れると、残る主節は <strong>even trained professionals can fall into this trap</strong> というシンプルなSVOのみ。長い文に出会ったら「削っても文が成立する部分」から先に見つけるのが速読の基本動作。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">While scientific rigour should guard against this
+  ← 譲歩（〜だけれども）
+
+even trained professionals can fall into this trap
+  ← 主節：SVO（骨格）
+
+with results ranging from A to B and C
+  ← 付帯状況：trapに陥った結果の具体例を後置
+
+While（逆接）… , SVO ,  with（付帯状況の具体化）
+という「サンドイッチ構造」</div>
+        <p>While は「～だけれども」という逆接の譲歩。「科学的厳密さがこれを防ぐべきなのに」という譲歩を置いてから、それでも訓練を積んだ専門家でさえ罠に陥る、と対比を作っている。with + 名詞 + 現在分詞（ranging）は「結果は～に及ぶという状態を伴って」という付帯状況で、直前の主張の具体例を後ろから追加する典型パターン。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>While節を外しても主節が成立することを確認できる？</li><li>with + 名詞 + 分詞の付帯状況構文を見抜ける？</li><li>ranging from A to B の意味を説明できる？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(2,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(2,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+<!-- ===== CASE 03 ===== -->
+<article class="case-card" id="card-3" data-tags="分詞構文">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 03</div>
+    <div class="case-title">that節の中の3つの動名詞を整理する（by doing, doing, doing）</div>
+    <div class="case-title-en">Three Parallel Gerunds inside a that-clause</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅰ</span>
+      <span class="case-ref">第9段落｜Dirk Schulze-Makuchの主張</span>
+      <span class="level-badge">構文レベル：★★★★★</span>
+      <span class="status-badge" id="badge-3"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(3)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅰ 第9段落 下線部(2)</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-3" onclick="toggleCardVisual(3)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-3">
+      <span class="s">He</span> <span class="v">has argued</span>
+<span class="cl-o"><span class="rel">that</span> <span class="s">the original researchers</span> <span class="v">skewed</span> <span class="o">the results</span></span>
+<span class="cl-adv">by <span class="v">adding</span> water to the soil as part of their experiments,
+<span class="v">using</span> the same methods they would have done on earth,
+and in the process potentially <span class="v">destroying</span> microbes that might have adapted to survive in this famously arid environment</span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-3.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">彼は、当初の研究者たちが、実験の一環として土壌に水を加え、地球上で行っていたのと同じ方法を用い、その過程でこの有名なほど乾燥した環境に適応して生き延びていたかもしれない微生物を、結果として破壊してしまった可能性がある形で、結果を歪めたのだと主張している。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p>主節は <em><strong>He has argued that ...</strong></em> のSVOのみ。that節内の主語 the original researchers・動詞 skewed・目的語 the results を確定した後は、by 以下に続く <strong>adding / using / destroying</strong> という3つの動名詞（すべて by に支配される）を「研究者が結果を歪めた具体的な手段」として並列に処理する。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">He has argued
+  [that the original researchers skewed the results]
+     ← that節（argued の目的語）
+
+by adding water to the soil ...(手段1)
+using the same methods ...        (手段2)
+destroying microbes ...           (手段3)
+  ← 3つの動名詞が by に支配され並列
+
+potentially destroying
+  ↑ 断定ではなく「可能性」の指摘であることに注意</div>
+        <p>by doing A, doing B, and doing C という形で、動名詞が3つ and でつながれている。最後の destroying の前に potentially があることに注意——研究者が確実に破壊したと断定しているのではなく、あくまで可能性の指摘であることを読み取る。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>argued の目的語がthat節全体であることを確認できる？</li><li>3つの動名詞がすべて by に支配されていることを説明できる？</li><li>potentially がどこにかかっているか説明できる？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(3,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(3,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+<!-- ===== CASE 04 ===== -->
+<article class="case-card" id="card-4" data-tags="分詞構文">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 04</div>
+    <div class="case-title">完了分詞構文 Having p.p. で時間の前後関係を圧縮する</div>
+    <div class="case-title-en">Perfect Participle Construction (Having + p.p.)</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅰ</span>
+      <span class="case-ref">第10段落｜Rosenthalの実験</span>
+      <span class="level-badge">構文レベル：★★★★☆</span>
+      <span class="status-badge" id="badge-4"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(4)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅰ 第10段落 下線部(2)</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-4" onclick="toggleCardVisual(4)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-4">
+      <span class="cl-adv"><span class="v">Having deliberately misled</span> his experimenters in this way</span>,
+<span class="s">Rosenthal</span> <span class="v">sat back and waited</span>
+<span class="cl-adv">to see if it would make any difference</span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-4.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">このようにして実験者たちを意図的に欺いたうえで、ローゼンタールは腰を落ち着け、それが何か違いを生むかどうかを見守った。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p>文頭の <em><strong>Having + 過去分詞</strong></em> は完了形の分詞構文で、主節の動作より<strong>前に完了した行為</strong>を表す。「欺いておいてから、様子を見た」という時間の前後関係を、Having misled ... という一語で圧縮している。主節の動詞は sat back and waited の2つが and で並列。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">Having deliberately misled his experimenters
+  ← 完了分詞構文：主節より前に完了した行為
+     （= Because he had misled them）
+
+Rosenthal sat back and waited
+  ← 主節：時間的に「後」の行為
+
+to see if it would make any difference
+  ← 目的の to不定詞（〜かどうかを見るために）
+
+時間軸：欺く(先) → 座って待つ(後) → 結果を見る(目的)</div>
+        <p>Having misled は Because he had misled（すでに欺いてしまっていたので）とほぼ同義の因果・時間関係を含む分詞構文。単純な Misling ではなく Having misled という完了形にすることで、「欺くという行為」が「座って待つ」という行為より時間的に先行し、かつその前提になっていることを示す。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>Having + p.p. が主節より前の時制を表すことを説明できる？</li><li>sat back and waited の2つの動詞が並列であることを確認できる？</li><li>to see if ... が目的の不定詞であることを説明できる？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(4,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(4,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+<!-- ===== CASE 05 ===== -->
+<article class="case-card" id="card-5" data-tags="並列・同格構文">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 05</div>
+    <div class="case-title">コロンで具体化する trap の中身（期待が証拠に先行する）</div>
+    <div class="case-title-en">Colon as Apposition: Explaining 'science's biggest traps'</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅰ</span>
+      <span class="case-ref">第4段落｜Chickenの化石騒動の結論</span>
+      <span class="level-badge">構文レベル：★★★★☆</span>
+      <span class="status-badge" id="badge-5"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(5)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅰ 第4段落</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-5" onclick="toggleCardVisual(5)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-5">
+      <span class="cl-adv"><span class="conj">Yet</span> in their pursuit of a hunch that would ultimately be proven right</span>,
+<span class="s">they</span> <span class="v">had fallen</span> <span class="o">into one of science's biggest traps</span>:
+<span class="v">allowing</span> expectation to run ahead of evidence,
+<span class="cl-adv">a tendency compounded by the desire to be the first to print, which can lead to corners being cut or inconsistencies not being checked</span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-5.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">しかし、最終的には正しいと証明されることになる勘を追い求めるあまり、彼らは科学における最大の罠の一つに陥っていた。すなわち、期待が証拠に先んじることを許してしまうことである。この傾向は、一番乗りで発表したいという欲求によって助長されるものであり、それは手抜きや矛盾の見落としにつながりかねない。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p>前置詞句 Yet in their pursuit of ... をいったん外すと、主節は <em><strong>they had fallen into one of science's biggest traps</strong></em> という完結したSVOになる。コロン以降はその「罠」の中身を<strong>同格的に説明</strong>する部分なので、別文として構えずに「＝」でつなげて読む。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">they had fallen into one of science's biggest traps
+  ↓ コロン（:）＝ 同格・具体化
+
+allowing expectation to run ahead of evidence
+  ← 罠の正体（動名詞句）
+
+a tendency compounded by the desire to be first
+  ← その傾向を助長する要因（同格）
+
+which can lead to corners being cut ...
+  ← 結果（関係代名詞節）
+
+罠 → 正体 → 助長する欲求 → 結果、と
+因果の階段を1文の中で降りていく</div>
+        <p>allowing expectation to run ahead of evidence は「期待が証拠より先を行くのを許してしまうこと」という動名詞句で、直前のコロンにより trap の内容そのものを言い換えている。さらにその後ろに a tendency（同格）→ compounded by（過去分詞）→ which（関係代名詞）と、説明が入れ子状に連鎖している。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>Yet の前置詞句を外して主節を確定できる？</li><li>コロン以降が trap の同格説明であることを説明できる？</li><li>which が何を先行詞としているか確認できる？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(5,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(5,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+<!-- ===== CASE 06 ===== -->
+<article class="case-card" id="card-6" data-tags="並列・同格構文">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 06</div>
+    <div class="case-title">ダッシュ以下を同格と読む（experimenter biasの言い換え）</div>
+    <div class="case-title-en">Dash as Apposition: Defining 'Experimenter Bias'</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅰ</span>
+      <span class="case-ref">第8段落｜実験者バイアスの説明</span>
+      <span class="level-badge">構文レベル：★★★☆☆</span>
+      <span class="status-badge" id="badge-6"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(6)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅰ 第8段落 下線部(1)前文</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-6" onclick="toggleCardVisual(6)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-6">
+      <span class="s">It</span> <span class="v">helps</span> <span class="o">to illustrate experimenter bias</span>
+—
+<span class="cl-noun">the way researchers may undermine their own work through the approach they take to it</span>,
+<span class="conj">and</span>
+<span class="cl-noun">the inadvertent influence their methods may have on the subjects of their experiment</span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-6.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">それは単なる仮説にすぎず、実験による裏付けもないが、それでも実験者バイアス――研究者が自分の取り組み方によって自らの研究を損ないかねないあり方や、その手法が実験対象に及ぼしかねない意図せぬ影響――を説明する助けにはなる。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p><em><strong>It helps to illustrate experimenter bias</strong></em> で文はいったん完結している。ダッシュ以降は experimenter bias の内容を言い換える<strong>同格説明</strong>であり、新しい文法要素を持ち込むわけではない。ダッシュ後に<em>the way ...</em>と<em>the ... influence ...</em>という2つの名詞句が and で並んでいる。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">It helps to illustrate experimenter bias
+  ← 主節（完結）
+
+  ダッシュ（—）＝ 同格説明の開始
+
+the way researchers may undermine their own work
+  （研究への影響）
+    +
+the inadvertent influence ... on the subjects
+  （対象への影響）
+
+↑ experimenter bias を「研究への影響」と
+   「対象への影響」の2方向から定義</div>
+        <p>the way S may V（研究者が自らの研究を損ないうるやり方）と the influence their methods may have on ...（その手法が実験対象に及ぼしうる影響）という2つの名詞句が、experimenter bias の正体を2方向から定義している。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>ダッシュの前で文が完結していることを確認できる？</li><li>ダッシュ以降が同格説明であることを説明できる？</li><li>2つの名詞句が and で並列されていることを見抜ける？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(6,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(6,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+<!-- ===== CASE 07 ===== -->
+<article class="case-card" id="card-7" data-tags="省略構文">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 07</div>
+    <div class="case-title">省略文を前文から復元する（But not as far as ...）</div>
+    <div class="case-title-en">Ellipsis Recovered from the Preceding Sentence</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅰ</span>
+      <span class="case-ref">第10段落｜ラットの実験の導入</span>
+      <span class="level-badge">構文レベル：★★★★☆</span>
+      <span class="status-badge" id="badge-7"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(7)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅰ 第10段落</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-7" onclick="toggleCardVisual(7)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-7">
+      <span class="conj">But</span> <span class="s">[they were]</span> <span class="v">not</span> <span class="c">[completely normal rats]</span>
+<span class="cl-adv"><span class="rel">as far as</span> the students participating in the study were concerned</span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-7.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">しかし、その研究に参加する学生たちの認識では、そうではなかった。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p>この <em><strong>But not ...</strong></em> という文は文法的に不完全に見えるが、実際は<strong>直前の文の内容を否定する形で省略</strong>されている。復元すると <em>But they were not completely normal rats as far as the students... were concerned</em> となる。短い否定文が出てきたら、まず直前の文をコピーして当てはめてみる。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">前文：these were completely normal rats
+  （客観的事実：普通のラットだった）
+
+But not
+  ← [they were not completely normal rats] の省略
+
+as far as the students ... were concerned
+  ← 「〜に関する限りでは」の限定
+
+客観的事実 ≠ 学生の主観的認識
+  というギャップを短い省略文で強調</div>
+        <p>as far as A is concerned は「Aに関する限りでは」という限定を表す定型表現。「客観的には（in reality）普通のラットだったが、研究に参加する学生の視点に限って言えば、そうではなかった」という、客観的事実と主観的認識のギャップを、あえて短い省略文で際立たせている。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>But not の後に省略されている語句を復元できる？</li><li>as far as A is concerned の意味を説明できる？</li><li>客観的事実と学生の認識のギャップを説明できる？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(7,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(7,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+<!-- ===== CASE 08 ===== -->
+<article class="case-card" id="card-8" data-tags="関係詞・名詞節">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 08</div>
+    <div class="case-title">that節とwhat節の二重構造（the reality is that ... about what is and isn't ...）</div>
+    <div class="case-title-en">Nested that-clause and what-clause</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅰ</span>
+      <span class="case-ref">最終段落手前｜バイアスの構造的説明</span>
+      <span class="level-badge">構文レベル：★★★★★</span>
+      <span class="status-badge" id="badge-8"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(8)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅰ 下線部(4)</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-8" onclick="toggleCardVisual(8)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-8">
+      <span class="s">the reality</span> <span class="v">is</span>
+<span class="cl-noun"><span class="rel">that</span> <span class="s">any scientist working within the system</span> <span class="v">must contend</span>
+with its biases
+<span class="cl-noun">about <span class="rel">what</span> is and isn't a worthwhile research programme</span></span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-8.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">しかし現実には、そのシステムの中で働く科学者は誰であれ、何が価値ある研究計画であり何がそうでないかについての、そのシステム自体が持つバイアスと向き合わざるをえないのである。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p><em><strong>the reality is that ...</strong></em> のSVCがまず骨格。補語であるthat節の内部を見ると、さらに<strong>about what is and isn't a worthwhile research programme</strong>という前置詞+疑問詞節（間接疑問文）が入れ子になっている。「文の中に文が入っている」二重構造を外側から順に崩す。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">the reality is
+  [that any scientist ... must contend with its biases
+     about
+       [what is and isn't a worthwhile research programme]
+  ]
+
+外側：the reality is that S V O（SVC構文）
+内側：about + 間接疑問（what節）
+
+what is a worthwhile research programme
+  and
+what isn't a worthwhile research programme
+  ← isとisn'tが共通の補語を共有（省略構造）</div>
+        <p>working within the system は any scientist を修飾する現在分詞句。about what is and isn't a worthwhile research programme は「何が価値ある研究計画であり、何がそうでないかについての」という意味で、is と isn't が共通の補語 a worthwhile research programme を共有する省略構造になっている。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>the reality is that のSVC構造を確認できる？</li><li>that節の中にさらにwhat節が入れ子になっていることを説明できる？</li><li>isとisn'tの後に省略されている語句を復元できる？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(8,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(8,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+<div class="part-heading">
+  <span class="part-roman">Ⅱ</span>
+  <div class="part-title">
+    <strong>都市と移動</strong>
+    Charles Montgomery, <em>Happy City: Transforming Our Lives Through Urban Design</em>（2015）より
+  </div>
+</div>
+
+<!-- ===== CASE 09 ===== -->
+<article class="case-card" id="card-9" data-tags="相関関係語句">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 09</div>
+    <div class="case-title">not A but rather B（受動態 be defined by の対比構造）</div>
+    <div class="case-title-en">Not A but Rather B (Passive Voice Contrast)</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅱ</span>
+      <span class="case-ref">第3段落｜Brittonの技術観</span>
+      <span class="level-badge">構文レベル：★★★☆☆</span>
+      <span class="status-badge" id="badge-9"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(9)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅱ 第3段落</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-9" onclick="toggleCardVisual(9)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-9">
+      <span class="s">The future</span> <span class="v">was not going to be defined</span>
+<span class="cl-adv">by some kind of deus ex machina solution to all of our problems</span>,
+<span class="conj">but rather</span>
+<span class="cl-adv">by step-by-step innovations and improvements applied to the tools we already had to work with</span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-9.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">未来というものは、私たちのあらゆる問題を解決してくれるような、いわば土壇場で現れる魔法の解決策によって形作られるのではなく、むしろすでに手元にあった道具に段階的に応用されていく技術革新と改良の積み重ねによって形作られていくものだと、私は悟った。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p>受動態 <em><strong>be defined by A</strong></em> の「A」の部分が、<strong>not A but rather B</strong> という対比構文になっている。同じ be defined by という骨格を保ったまま、byの後ろの中身だけが入れ替わる点を見抜けば、一見長い文もシンプルな対比に見えてくる。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">The future was not going to be defined
+  by A (deus ex machina solution)
+    ↕ not A but rather B の対比
+  by B (step-by-step innovations)
+
+A = 一発逆転の魔法の解決策
+B = 既存の道具への地道な改良の積み重ね
+
+同じ be defined by の枠組みを保ったまま
+中身だけが対照的に入れ替わる</div>
+        <p>「魔法のような一発解決策（deus ex machina）によってではなく、既存の道具に地道な改善を積み重ねることによって、未来は定義される」という対比。applied to the tools we already had to work with は improvements を修飾する過去分詞句。この一文が本文全体の技術観＝「劇的な新技術ではなく漸進的改良こそが現実を変える」という主張の核心。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>be defined by という同じ骨格がbyの前後で保たれていることを確認できる？</li><li>not A but rather B の対比構造を説明できる？</li><li>applied to ... が何を修飾しているか説明できる？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(9,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(9,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+<!-- ===== CASE 10 ===== -->
+<article class="case-card" id="card-10" data-tags="相関関係語句">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 10</div>
+    <div class="case-title">the 比較級, the 比較級 の相関構文がthat節に入れ子になる</div>
+    <div class="case-title-en">The Comparative...the Comparative Nested in a that-clause</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅱ</span>
+      <span class="case-ref">heteroscedasticityの説明</span>
+      <span class="level-badge">構文レベル：★★★★★</span>
+      <span class="status-badge" id="badge-10"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(10)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅱ 下線部(3)直前</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-10" onclick="toggleCardVisual(10)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-10">
+      <span class="s">It</span> <span class="v">suggests</span>
+<span class="cl-o"><span class="rel">that</span> <span class="conj">the bigger</span> the size of any group,
+<span class="conj">the harder</span> <span class="s">it</span> <span class="v">is</span>
+<span class="o">to predict the variation in its characteristics</span>
+<span class="conj">or</span>
+<span class="o">to find one solution to a problem involving huge numbers of independent variables and actors</span></span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-10.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">それが示唆しているのは、どのような集団であれ、その規模が大きくなればなるほど、その特性のばらつきを予測することや、無数の独立した変数や関係者が絡む問題に対して一つの解決策を見出すことが、ますます難しくなるということである。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p><em><strong>It suggests that ...</strong></em>のSVOがまず外枠。that節の中身が、さらに<strong>the + 比較級 ..., the + 比較級 ...</strong>（～すればするほど、ますます～）という相関構文になっている入れ子構造。外側の枠を先に確定してから、内側の比較構文を処理する。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">It suggests
+  [that the bigger the size of any group,
+        the harder it is to predict A or to find B]
+
+外側：It suggests that S...（SVO）
+内側：the 比較級, the 比較級（相関構文）
+
+it is 形式主語
+  真主語 = to predict the variation
+         or to find one solution
+
+「集団が大きい」→「予測・解決が難しい」
+という相関関係を二重構造で表現</div>
+        <p>the harder it is to predict A or to find B の it は形式主語で、真主語は to predict ... と to find ... の2つの不定詞句（or で並列）。「大きな集団ほど予測や単純な解決が難しくなる」という主張を具体化している。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>It suggests that のSVOを確定できる？</li><li>the比較級, the比較級の相関構文を見抜ける？</li><li>形式主語itの真主語がto不定詞2つであることを説明できる？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(10,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(10,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+<!-- ===== CASE 11 ===== -->
+<article class="case-card" id="card-11" data-tags="関係詞・名詞節">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 11</div>
+    <div class="case-title">There構文の実質的な主語とwhoever（複合関係代名詞）</div>
+    <div class="case-title-en">There-construction with a Whoever-clause</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅱ</span>
+      <span class="case-ref">第1段落｜1969年当時の期待</span>
+      <span class="level-badge">構文レベル：★★★☆☆</span>
+      <span class="status-badge" id="badge-11"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(11)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅱ 第1段落</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-11" onclick="toggleCardVisual(11)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-11">
+      <span class="conj">There</span> <span class="v">was</span>
+<span class="s">a lot of money to be made</span>
+<span class="cl-adv">by <span class="rel">whoever</span> could divine the single technology most likely to capture the market in the coming decades</span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-11.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">今後数十年で市場を制する可能性が最も高い、たった一つの技術を見抜くことができる者ならば誰でも、大金を稼ぐことができただろう。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p>There is/was 構文の実質的な主語は<em><strong>a lot of money</strong></em>（to be made はそれを修飾する不定詞）。by の後ろに続く<strong>whoever ...</strong>は「～する人なら誰でも」という複合関係代名詞節で、前置詞 by の目的語になる名詞節を作っている。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">There was a lot of money to be made
+  ← There構文：実質的主語は a lot of money
+
+by whoever could divine the single technology
+  ← by の目的語 = whoever節（複合関係代名詞）
+
+most likely to capture the market
+  ← technology を修飾する形容詞句
+
+「その技術さえ当てられれば、誰でも
+ 大金を稼げた」という期待の大きさを表現</div>
+        <p>whoever could divine the single technology most likely to capture the market は「今後数十年で市場を制する可能性が最も高い唯一の技術を見抜くことができる者なら誰でも」という意味。1969年当時の期待の大きさを表す一文。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>There構文の実質的な主語がa lot of moneyであることを確認できる？</li><li>whoeverが複合関係代名詞であることを説明できる？</li><li>most likely to capture the marketが何を修飾しているか説明できる？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(11,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(11,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+<!-- ===== CASE 12 ===== -->
+<article class="case-card" id="card-12" data-tags="不定詞">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 12</div>
+    <div class="case-title">only to do（予想外の結果を表す不定詞用法）</div>
+    <div class="case-title-en">Only to Do: Unexpected Result Construction</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅱ</span>
+      <span class="case-ref">第2段落｜Brittonの技術評価</span>
+      <span class="level-badge">構文レベル：★★★☆☆</span>
+      <span class="status-badge" id="badge-12"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(12)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅱ 第2段落</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-12" onclick="toggleCardVisual(12)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-12">
+      <span class="s">He</span> <span class="v">rated</span> <span class="o">technologies</span>
+<span class="cl-rel"><span class="rel">that</span> <span class="v">seemed</span> fantastical at the time</span>,
+<span class="cl-adv">only to reemerge decades later</span>,
+<span class="cl-adv">such as hybrid cars and hydrogen fuel cells</span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-12.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">彼は、当時は空想的に思えたものの、結局は数十年後にハイブリッド車や水素燃料電池といった形で実際に登場することになる技術についても評価していた。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p>主節は<em><strong>He rated technologies</strong></em>というシンプルなSVO。technologies を修飾する関係詞節と、その後に続く<strong>only to reemerge decades later</strong>（結局は数十年後に再登場することになった）という不定詞句を、いったん外側から見て「technologiesの説明が2段階続いている」と捉える。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">He rated technologies
+  ← 主節：SVO（骨格）
+
+[that seemed fantastical at the time]
+  ← technologies を修飾する関係詞節（評価①：当時の評価）
+
+only to reemerge decades later
+  ← 予想外の結果を表す不定詞（評価②：後の展開）
+
+当時：空想的 → （予想外に）→ 後年：現実化
+   only to do が皮肉ではなく肯定的な驚きを演出</div>
+        <p>only to do は「（～したが）結局は～することになっただけだった」という予想外・皮肉な結果を表す不定詞用法。ここでは「当時は空想的に思われた技術」が「数十年後に実際に再登場した」という、当時の評価とのギャップをむしろ肯定的な驚きとして描いている。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>He rated technologies という主節のSVOを確認できる？</li><li>only to doが予想外の結果を表す用法であることを説明できる？</li><li>当時の評価と後年の展開のギャップを説明できる？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(12,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(12,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+<!-- ===== CASE 13 ===== -->
+<article class="case-card" id="card-13" data-tags="形式主語構文">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 13</div>
+    <div class="case-title">形式主語It...to suggest that...の中にさらに副詞句が挟まる</div>
+    <div class="case-title-en">Formal Subject It + to-infinitive with Nested that-clause</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅱ</span>
+      <span class="case-ref">第5段落｜Jetsonsの時代の常識</span>
+      <span class="level-badge">構文レベル：★★★★☆</span>
+      <span class="status-badge" id="badge-13"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(13)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅱ 第5段落</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-13" onclick="toggleCardVisual(13)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-13">
+      <span class="s">It</span> <span class="v">was</span> <span class="c">unfashionable</span>
+<span class="cl-s">to suggest
+<span class="rel">that</span> <span class="cl-adv">after a couple of generations</span>,
+<span class="s">people</span> <span class="v">would still be getting around</span>
+pretty much the same way they had since the dawn of the internal combustion engine,
+<span class="cl-adv">using trains, buses, cars, bicycles, motorcycles and, as always, their feet</span></span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-13.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">数世代後になっても人々は、内燃機関が登場して以来ずっとそうしてきたのとほとんど変わらない方法で――電車、バス、車、自転車、バイク、そしていつも通り自分の足を使って――移動し続けているだろうと示唆することは、当時としては時代遅れな考え方だった。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p><em><strong>It was unfashionable to suggest ...</strong></em>のItは形式主語で、真の主語は to suggest 以下。さらに suggest の目的語として、<strong>after a couple of generations</strong>という時を表す副詞句を挟んでからthat節本体（people would...）が始まる点に注意。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">It was unfashionable
+  真主語 = to suggest [that ... ]
+  （形式主語構文）
+
+to suggest
+  that
+    after a couple of generations（副詞句・挿入）
+    people would still be getting around
+      the same way they had ...
+      using trains, buses, cars ...（付帯状況）
+
+副詞句が主語Sの前に割り込むため
+that節の主語が見えにくくなっている</div>
+        <p>the same way they had（省略：the same way they had gotten around）は「彼らがずっとそうしてきたのと同じやり方で」。using trains, buses, cars... は付帯状況の分詞構文で、getting aroundの具体的手段を並べている。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>It が形式主語であることを確認できる？</li><li>that節の中でafter a couple of generationsが副詞句として挿入されていることを説明できる？</li><li>usingの分詞構文が何の付帯状況を表しているか説明できる？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(13,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(13,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+<!-- ===== CASE 14 ===== -->
+<article class="case-card" id="card-14" data-tags="相関関係語句">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 14</div>
+    <div class="case-title">not merely A but B（butの後でa matterが省略される）</div>
+    <div class="case-title-en">Not Merely A but B (Ellipsis after 'but')</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅱ</span>
+      <span class="case-ref">第5段落末｜移動の問題の本質</span>
+      <span class="level-badge">構文レベル：★★★★☆</span>
+      <span class="status-badge" id="badge-14"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(14)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅱ 下線部(2)</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-14" onclick="toggleCardVisual(14)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-14">
+      <span class="s">the question of mobility</span> <span class="v">was</span>
+<span class="conj">not merely</span> <span class="c">a matter of technology or economics</span>,
+<span class="conj">but</span> <span class="c">[a matter] of culture and psychology</span>,
+<span class="conj">and</span> <span class="c">[a matter] of the vast variation in our preferences</span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-14.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">さらにブリットンは、移動という問題が単に技術や経済だけの問題ではなく、文化や心理、そして私たちの好みにおける大きなばらつきの問題でもあるのだと気づくようになった。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p><em><strong>not merely A but B</strong></em>（Aだけでなく B も）の構文で、A = a matter of technology or economics、B = of culture and psychology, and of the vast variation in our preferences。<strong>but の後ろで "a matter" が省略</strong>されていることに気づけるかがポイント。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">the question of mobility was
+  not merely [a matter] of technology or economics
+  but        [a matter] of culture and psychology
+  and        [a matter] of the vast variation in our preferences
+
+↑ but以降で "a matter" が繰り返し省略
+   3つの前置詞句(of A / of B / of C)は
+   並列ではなく、すべて a matter を修飾
+
+視点の移動：技術・経済（モノ・カネ）
+        → 文化・心理・嗜好（ヒト）</div>
+        <p>not merely A but B（Aだけでなく B も）の構文で、but の後ろで「a matter」が省略されている。技術・経済という「モノ・カネ」の領域から、文化・心理・個人の嗜好という「ヒト」の領域へと視点を移すことで、次段落以降の主張への橋渡しになっている。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>not merely A but Bの対比構造を確認できる？</li><li>butの後に省略されている語句(a matter)を復元できる？</li><li>3つの前置詞句がすべてa matterを修飾していることを説明できる？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(14,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(14,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+<!-- ===== CASE 15 ===== -->
+<article class="case-card" id="card-15" data-tags="不定詞">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 15</div>
+    <div class="case-title">to不定詞同士の左右対称構文（S＝C）</div>
+    <div class="case-title-en">Symmetric to-infinitive Subject and Complement</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅱ</span>
+      <span class="case-ref">第6段落冒頭｜人間性の否定</span>
+      <span class="level-badge">構文レベル：★★★☆☆</span>
+      <span class="status-badge" id="badge-15"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(15)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅱ 第6段落</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-15" onclick="toggleCardVisual(15)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-15">
+      <span class="s">To depend on just one technology for urban mobility</span>
+<span class="v">would be</span>
+<span class="c">to deny human nature itself</span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-15.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">都市における移動手段をたった一つの技術だけに頼るということは、人間性そのものを否定することになるだろう。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p>主語も補語も<em><strong>to不定詞</strong></em>という<strong>左右対称の構造</strong>。「Sすること＝Cすること」という等式（イコール文）になっている点を見抜けば、意味の対応関係が一目でわかる。would be という助動詞は仮定のニュアンスを添えている。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">S = To depend on just one technology
+V = would be
+C = to deny human nature itself
+
+  S（to不定詞）＝ C（to不定詞）
+  という左右対称のイコール文
+
+depend on one technology
+  ＝ deny human nature itself
+
+この後に続く具体展開の
+「結論を先に示すトピックセンテンス」</div>
+        <p>depend on just one technology（一つの技術だけに頼ること）＝deny human nature itself（人間性そのものを否定すること）という等式が、都市の移動手段を単一技術に絞ることの本質的な問題点を、たった1文で強く言い切っている。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>主語と補語がどちらもto不定詞であることを確認できる？</li><li>S＝Cの等式構造を説明できる？</li><li>この文が後続段落のトピックセンテンスであることを説明できる？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(15,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(15,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+<!-- ===== CASE 16 ===== -->
+<article class="case-card" id="card-16" data-tags="比較・対比表現">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 16</div>
+    <div class="case-title">比較の基準をそろえる（more different from A than from B）</div>
+    <div class="case-title-en">Aligning the Basis of Comparison</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅱ</span>
+      <span class="case-ref">heteroscedasticityの具体例（Britton発言）</span>
+      <span class="level-badge">構文レベル：★★★★☆</span>
+      <span class="status-badge" id="badge-16"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(16)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅱ 下線部(3)</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-16" onclick="toggleCardVisual(16)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-16">
+      <span class="cl-adv"><span class="conj">But</span> if you look at statistics of their choices and preferences</span>,
+<span class="s">you</span> <span class="v">see</span>
+<span class="cl-o"><span class="s">French people</span> <span class="v">are</span> <span class="c">more different from each other</span>
+<span class="conj">than</span> <span class="s">they</span> <span class="v">are</span> <span class="c">[different] from Americans</span></span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-16.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">しかし、彼らの選択や好みに関する統計を見てみると、フランス人はアメリカ人との違いよりも、フランス人同士の違いの方が大きいということがわかるのです。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p>比較の対象を正確にそろえることが最大のポイント。<em><strong>French people are different from each other</strong></em>（フランス人同士の差）と<em><strong>French people are different from Americans</strong></em>（フランス人とアメリカ人の差）という2つの「差」を比較していることを見抜く。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">French people are more different
+  from each other（フランス人同士の差）
+than
+  they are [different] from Americans
+  （フランス人とアメリカ人の差）
+
+↑ than以下は differentが共通なので省略
+   （they are different from Americans）
+
+比較しているのは「差の大きさ」同士
+　直感に反する統計的事実（異質性）を提示</div>
+        <p>than 以下の they are from Americans は they are different from Americans の省略形（differentが共通なので省略）。直感的には「フランス人とアメリカ人はまったく違う」と思われがちだが、統計的には「フランス人同士の個人差の方が大きい」という、heteroscedasticity（大きな集団ほど内部のばらつきが予測しづらい）という概念を具体例で裏付ける一文。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>比較されている2つの「差」の対象を正確に説明できる？</li><li>than以下で省略されているdifferentを復元できる？</li><li>この文がheteroscedasticityをどう裏付けているか説明できる？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(16,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(16,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+<!-- ===== CASE 17 ===== -->
+<article class="case-card" id="card-17" data-tags="関係詞・名詞節">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 17</div>
+    <div class="case-title">whose節の中でuntilが評価を反転させる</div>
+    <div class="case-title-en">Whose-clause with a Reversal via 'Until'</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅱ</span>
+      <span class="case-ref">（中略）直前｜Brittonの人物評</span>
+      <span class="level-badge">構文レベル：★★★★☆</span>
+      <span class="status-badge" id="badge-17"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(17)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅱ 中略前</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-17" onclick="toggleCardVisual(17)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-17">
+      <span class="s">Britton</span> <span class="v">is</span>
+<span class="c">one of those people</span>
+<span class="cl-rel"><span class="rel">whose</span> <span class="s">ideas</span> <span class="v">seem</span>
+too theoretical, too pie-in-the-sky to matter</span>,
+<span class="cl-adv"><span class="conj">until</span> suddenly <span class="s">they</span> <span class="v">change</span> <span class="o">the world</span></span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-17.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">ブリットンは、そのアイデアがあまりに理論的すぎ、あまりに絵空事すぎて重要だとは思えないものの、突如としてそれが世界を変えてしまう――そんな人物の一人である。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p>主節<em><strong>Britton is one of those people</strong></em>のSVCを確定した後、whose ideas seem ... という関係代名詞節が one of those people を修飾する。この節の内部にさらに<strong>until</strong>節があり、「無意味に思えるアイデア」から「世界を変えるアイデア」への<strong>評価の反転</strong>が起きている。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">Britton is one of those people
+  ← 主節：SVC
+
+whose ideas seem too theoretical, too pie-in-the-sky
+  ← one of those people を修飾する関係詞節
+  （否定的評価：理論的すぎ・絵空事すぎ）
+
+until suddenly they change the world
+  ← 評価の反転（until = 〜するまでは）
+
+否定的評価 → until → 世界を変える
+   という劇的などんでん返しを1文に凝縮</div>
+        <p>too A to do（Aすぎて～できない）が2回連続で強調され、否定的な評価が先に置かれる。続く until suddenly they change the world（それが突然世界を変えるまでは）が、その否定的評価をひっくり返す。Brittonの一見突飛なアイデアが後に現実になっていくという本文全体の展開を予告している。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>whose節がone of those peopleを修飾していることを確認できる？</li><li>too A to doの構造を2つとも説明できる？</li><li>untilが評価をどう反転させているか説明できる？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(17,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(17,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+<!-- ===== CASE 18 ===== -->
+<article class="case-card" id="card-18" data-tags="相関関係語句">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 18</div>
+    <div class="case-title">just as A as B（挿入句Britton admitsを外して骨格を取る）</div>
+    <div class="case-title-en">Just as A as B, with a Parenthetical Insertion</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅱ</span>
+      <span class="case-ref">車の禁止と依存の両極端</span>
+      <span class="level-badge">構文レベル：★★★☆☆</span>
+      <span class="status-badge" id="badge-18"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(18)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅱ</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-18" onclick="toggleCardVisual(18)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-18">
+      <span class="s">merely banning cars</span>
+<span class="cl-adv">— <span class="s">Britton</span> <span class="v">admits</span> —</span>
+<span class="v">is</span>
+<span class="c">just as simplistic as depending on them entirely</span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-18.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">しかし、単に車を禁止することも、車に完全に依存することと同じくらい単純すぎる考え方だと、ブリットン自身も認めている。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p><em><strong>Britton admits</strong></em>はコンマに挟まれた<strong>挿入句</strong>（＝「ブリットン自身も認めるように」）であり、文の主語・動詞・補語の骨格には関与しない。挿入句を無視すれば、主語 merely banning cars、動詞 is、補語 just as simplistic as ... というシンプルなSVCが残る。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">merely banning cars
+  ↑（挿入句：Britton admits）↓
+is just as simplistic as depending on them entirely
+
+S = merely banning cars（禁止する）
+C = just as simplistic as depending on them
+    （完全に依存すること）と同じくらい単純
+
+禁止も依存も「同じくらい単純」と評価
+  → 両極端を戒め、多様性の尊重に話を戻す</div>
+        <p>as A as B の同等比較（just はその強調）で、banning cars（禁止すること）と depending on them entirely（完全に依存すること）という両極端の姿勢を「同じくらい単純だ」と評価している。前段落までの成功例の紹介直後に、あえてバランスを取る役割を果たす。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>Britton admitsが挿入句であることを確認できる？</li><li>主語S・動詞V・補語Cを挿入句を除いて特定できる？</li><li>just as A as Bの同等比較構造を説明できる？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(18,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(18,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+<!-- ===== CASE 19 ===== -->
+<article class="case-card" id="card-19" data-tags="結果・強調構文">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 19</div>
+    <div class="case-title">so few people that ...（倒置が起きない結果構文）</div>
+    <div class="case-title-en">So Few + Noun + That (No Inversion)</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅱ</span>
+      <span class="case-ref">パリの交通事情</span>
+      <span class="level-badge">構文レベル：★★★☆☆</span>
+      <span class="status-badge" id="badge-19"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(19)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅱ</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-19" onclick="toggleCardVisual(19)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-19">
+      <span class="conj">So</span> <span class="s">few people</span> <span class="v">took</span> <span class="o">buses</span>
+<span class="cl-adv"><span class="rel">that</span> <span class="s">the city</span> <span class="v">was considering</span> <span class="o">abandoning the service</span></span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-19.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">バスを利用する人があまりに少なかったので、市はそのサービスを廃止することを検討していたほどだった。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p>so ... that構文だが、<strong>主語が so few people であるため疑問文のような倒置は起きない</strong>（"Such few people did the buses see" のような倒置と混同しないこと）。文頭に so があっても、そのまま平叙文の語順（S+V+O）で読む。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">So few people took buses
+  ← S+V+O（倒置なし、平叙文の語順のまま）
+
+that the city was considering
+   abandoning the service
+  ← 結果節（あまりに少なかったので〜という結果に）
+
+so few + 名詞 + that ...
+  ＝ so + 形容詞/副詞 + that ... と同じ理屈
+    （few が名詞を直接修飾する点に注意）</div>
+        <p>so few + 名詞 + that ... は「あまりに少ない～なので…」という結果構文で、few が名詞を直接修飾している点に注意。was considering abandoning は「（まさに）やめることを検討していた」という切迫感を表し、直後のCarte Orange導入によってバス利用が40%増えたという展開と鮮やかな対比をなす。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>Soで始まっても倒置が起きないことを説明できる？</li><li>so few peopleのfewが名詞を修飾する形容詞であることを確認できる？</li><li>that以下が結果節であることを説明できる？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(19,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(19,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+<!-- ===== CASE 20 ===== -->
+<article class="case-card" id="card-20" data-tags="分詞構文">
+  <div class="card-head"><div class="card-head-left">
+    <div class="case-num">Case 20</div>
+    <div class="case-title">by doing A and doing Bの反復とthe same wayの比喩節</div>
+    <div class="case-title-en">Repeated 'by doing' + Simile Clause 'the same way'</div>
+    <div class="case-meta-row">
+      <span class="mondai-badge">問題Ⅱ</span>
+      <span class="case-ref">Britton発言｜結びの思想的クライマックス</span>
+      <span class="level-badge">構文レベル：★★★★☆</span>
+      <span class="status-badge" id="badge-20"></span>
+    </div>
+  </div><div class="card-actions"><button type="button" class="act-btn" onclick="focusCard(20)">集中</button></div></div>
+  <div class="case-source"><span class="src-label">出典</span>東京科学大学 2026年度前期日程 英語 問題Ⅱ 下線部(4)後</div>
+  <div class="card-body">
+    <div class="card-visual-toggle">
+      <button type="button" class="card-toggle-btn" id="cardToggle-20" onclick="toggleCardVisual(20)">⬜ 白文 → 🎨 カラー化</button>
+    </div>
+    <div class="english-text" id="eng-20">
+      <span class="s">The system</span> <span class="v">transforms</span> <span class="o">the city</span>
+<span class="cl-adv">by <span class="v">transforming</span> our choices,
+and ultimately <span class="v">transforming</span> each of us</span>,
+<span class="cl-adv">the same way
+<span class="cl-rel">a disabled person's life is transformed
+when they can wheel their chair onto a bus</span></span>.
+    </div>
+    <div class="audio-player">
+      <span class="audio-label">🔊 音声で確認</span>
+      <audio controls preload="none" src="audio/case-20.mp3"></audio>
+    </div>
+    <details class="reveal-details reveal-jp"><summary class="reveal-summary">📖 日本語訳</summary><div class="reveal-inner">
+      <div class="translation">「この仕組みは、私たちの選択を変え、最終的には私たち一人ひとりを変えることによって、都市を変えていくのです。それはちょうど、障害を持つ人が車椅子でバスに乗り込めるようになったとき、その人の人生が一変するのと同じようにです」とブリットンは語った。</div>
+    </div></details>
+    <details class="reveal-details reveal-exp"><summary class="reveal-summary">💡 構文解説</summary><div class="reveal-inner">
+      <details class="box-details"><summary class="box-summary">【ここが重要！】を開く ▼</summary><div class="imp-box"><div class="imp-label">【ここが重要！】</div>
+        <p>主節<em><strong>The system transforms the city</strong></em>のSVOがまず核。by の後ろに<strong>transforming our choices</strong>と<strong>transforming each of us</strong>という2つの動名詞が and で並列され、「都市を変える」ことの具体的な仕組みを段階的に説明している。</p>
+      </div></details>
+      <details class="box-details"><summary class="box-summary">◉ ロジカル・アイ を開く ▼</summary><div class="logic-box"><div class="logic-label">◉ ロジカル・アイ</div>
+        <div class="logic-formula">The system transforms the city
+  ← 主節：SVO
+
+by transforming our choices,
+and ultimately transforming each of us
+  ← 手段（動名詞2つが並列）：選択→人間へと影響が拡大
+
+the same way (that)
+  a disabled person's life is transformed
+  when they can wheel their chair onto a bus
+  ← 比喩節（in the same way that の口語形）
+
+制度 → 選択を変える → 人間を変える
+  という因果の連鎖を身近な比喩で締めくくる</div>
+        <p>the same way (that) S+V は「Sが～するのと同じように」という副詞節を導く口語的表現（＝in the same way that）。「制度が都市を変え、選択を変え、人間そのものを変える」という因果の連鎖を、身近な比喩（車椅子でバスに乗れること）で締めくくる、本文の思想的クライマックスの一文。</p>
+      </div></details>
+      <div class="selfcheck"><div class="selfcheck-title">⏱ 30秒セルフチェック</div><ul>
+        <li>The system transforms the cityの主節SVOを確認できる？</li><li>by以下の2つの動名詞が並列であることを説明できる？</li><li>the same wayが比喩節を導く表現であることを説明できる？</li>
+      </ul></div>
+    </div></details>
+    <div class="prog-btns">
+      <button type="button" class="prog-btn prog-ok" onclick="setStatus(20,'mastered',this)">✅ 理解した</button>
+      <button type="button" class="prog-btn prog-redo" onclick="setStatus(20,'needs-review',this)">⚠ 要復習</button>
+    </div>
+  </div>
+</article>
+
+
+</div>
+
+<div class="no-results" id="noResults">🔍 該当する構文が見つかりませんでした。検索語やカテゴリーを変更してください。</div>
+
+<footer>
+  <p id="footerProgress">進捗：理解済み 0 / 20（0%）</p>
+  <p>東京科学大学 2026年度前期日程 英語 — 重要構文ビジュアル解析スイート</p>
+  <p>©2026 Sapphire ONLINE Studies English Project</p>
+</footer>
+
+<script>
+const TOTAL=20;
+const LS_KEY='tokyo_science_2026_v1';
+let statusMap={}, activeTag='all', focusedId=null, isVisualMode=false;
+
+function loadProgress(){try{statusMap=JSON.parse(localStorage.getItem(LS_KEY))||{};}catch(e){statusMap={};}for(let i=1;i<=TOTAL;i++){if(!statusMap[i])statusMap[i]="none";}}
+function saveProgress(){localStorage.setItem(LS_KEY,JSON.stringify(statusMap));}
+
+function initDashboard(){
+  const chips=document.getElementById('dashChips');chips.innerHTML='';
+  for(let i=1;i<=TOTAL;i++){
+    const d=document.createElement('div');d.className='dash-chip';
+    const dot=document.createElement('div');dot.className='chip-dot';dot.id='dot-'+i;
+    const lbl=document.createElement('span');lbl.textContent='C'+String(i).padStart(2,'0');
+    d.appendChild(dot);d.appendChild(lbl);chips.appendChild(d);
+  }
+}
+function updateDashboard(){
+  let mastered=0;
+  for(let i=1;i<=TOTAL;i++){
+    const s=statusMap[i]||"none";
+    const dot=document.getElementById('dot-'+i);
+    if(dot)dot.className='chip-dot'+(s==='mastered'?' mastered':s==='needs-review'?' needs-review':'');
+    if(s==='mastered')mastered++;
+  }
+  const pct=Math.round((mastered/TOTAL)*100);
+  document.getElementById('masteredCount').textContent=mastered;
+  document.getElementById('progressBar').style.width=pct+'%';
+  document.getElementById('footerProgress').textContent=`進捗：理解済み ${mastered} / ${TOTAL}（${pct}%）`;
+}
+function applySavedStatus(){
+  for(let i=1;i<=TOTAL;i++){
+    const s=statusMap[i]||"none";
+    const badge=document.getElementById('badge-'+i);
+    if(badge){
+      badge.className='status-badge'+(s==='mastered'?' mastered':s==='needs-review'?' needs-review':'');
+      badge.textContent=s==='mastered'?'✅ 理解済み':s==='needs-review'?'⚠ 要復習':'';
+    }
+    const card=document.getElementById('card-'+i);
+    if(card){
+      card.querySelectorAll('.prog-btn').forEach(b=>b.classList.remove('on'));
+      if(s==='mastered')card.querySelector('.prog-ok')?.classList.add('on');
+      if(s==='needs-review')card.querySelector('.prog-redo')?.classList.add('on');
+    }
+  }
+}
+function setStatus(num,newStatus,btn){
+  const prev=statusMap[num];
+  statusMap[num]=(prev===newStatus)?"none":newStatus;
+  saveProgress();applySavedStatus();updateDashboard();
+}
+function resetAll(){
+  if(!confirm('すべての学習進捗をリセットします。よろしいですか？'))return;
+  statusMap={};for(let i=1;i<=TOTAL;i++)statusMap[i]="none";
+  saveProgress();applySavedStatus();updateDashboard();
+}
+
+function buildTagBar(){
+  const CATEGORY_ORDER=[
+    "相関関係語句",
+    "比較・対比表現",
+    "関係詞・名詞節",
+    "分詞構文",
+    "並列・同格構文",
+    "不定詞",
+    "形式主語構文",
+    "省略構文",
+    "結果・強調構文"
+  ];
+  const counts={};
+  document.querySelectorAll('.case-card').forEach(c=>{
+    const t=c.dataset.tags;
+    counts[t]=(counts[t]||0)+1;
+  });
+  const bar=document.getElementById('tagBar');bar.innerHTML='';
+  const total=document.querySelectorAll('.case-card').length;
+  const allBtn=document.createElement('button');allBtn.type='button';allBtn.className='tab-btn active';allBtn.textContent=`すべて（${total}）`;allBtn.dataset.tag='all';
+  bar.appendChild(allBtn);
+  CATEGORY_ORDER.forEach(t=>{
+    if(!counts[t])return;
+    const b=document.createElement('button');b.type='button';b.className='tab-btn';b.textContent=`${t}（${counts[t]}）`;b.dataset.tag=t;
+    bar.appendChild(b);
+  });
+  bar.querySelectorAll('.tab-btn').forEach(b=>{
+    b.addEventListener('click',()=>{
+      activeTag=b.dataset.tag;
+      bar.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      applyFilters();
+    });
+  });
+}
+function refreshTabCounts(){/* placeholder for future count badges */}
+
+function applyFilters(){
+  const q=document.getElementById('searchInput').value.trim().toLowerCase();
+  let visible=0;
+  document.querySelectorAll('.case-card').forEach(card=>{
+    const text=(card.dataset.tags+' '+card.innerText).toLowerCase();
+    const cardTag=card.dataset.tags;
+    const status=statusMap[card.id.replace('card-','')]||"none";
+    let tagOK;
+    if(activeTag==='all')tagOK=true;
+    else if(activeTag==='✅ 理解済み')tagOK=(status==='mastered');
+    else if(activeTag==='⚠ 要復習')tagOK=(status==='needs-review');
+    else if(activeTag==='○ 未学習')tagOK=(status==='none');
+    else tagOK=(cardTag===activeTag);
+    const show=tagOK&&(!q||text.includes(q));
+    card.style.display=show?'':'none';
+    if(show)visible++;
+  });
+  document.getElementById('noResults').style.display=(visible===0)?'block':'none';
+  refreshTabCounts();
+}
+
+function focusCard(id){
+  const card=document.getElementById('card-'+id);
+  if(document.body.classList.contains('focusing')&&focusedId===id){
+    document.body.classList.remove('focusing');card.classList.remove('focused');focusedId=null;
+  }else{
+    document.body.classList.add('focusing');
+    document.querySelectorAll('.case-card').forEach(c=>c.classList.remove('focused'));
+    card.classList.add('focused');focusedId=id;
+    card.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+}
+function setAllReveal(show){
+  document.querySelectorAll('.reveal-details').forEach(d=>{if(show)d.setAttribute('open','');else d.removeAttribute('open');});
+}
+function setMode(mode){
+  document.body.classList.remove('mode-english','mode-blind');
+  ['modeNormal','modeEnglish','modeBlind'].forEach(id=>{document.getElementById(id).classList.remove('active');});
+  if(mode==='english'){document.body.classList.add('mode-english');document.getElementById('modeEnglish').classList.add('active');}
+  else if(mode==='blind'){document.body.classList.add('mode-blind');document.getElementById('modeBlind').classList.add('active');}
+  else{document.getElementById('modeNormal').classList.add('active');}
+}
+function toggleVisual(){
+  const btn=document.getElementById('modeVisual');
+  isVisualMode=!isVisualMode;
+  if(isVisualMode){
+    document.body.classList.add('mode-plain');
+    btn.classList.add('visual-active');
+    btn.textContent='🎨 ビジュアル分析　→　⬜ 白文表示（クリックで切り替え）';
+  }else{
+    document.body.classList.remove('mode-plain');
+    btn.classList.remove('visual-active');
+    btn.textContent='⬜ 白文表示　→　🎨 ビジュアル分析（クリックで切り替え）';
+  }
+  // 全体切り替え時は各カードの個別トグルもリセットして表示を統一
+  document.querySelectorAll('.case-card').forEach(card=>{
+    card.classList.remove('card-plain');
+    const n=card.id.replace('card-','');
+    const cbtn=document.getElementById('cardToggle-'+n);
+    if(cbtn){cbtn.classList.remove('is-plain');cbtn.textContent='⬜ 白文 → 🎨 カラー化';}
+  });
+}
+
+/* ── カード単位の白文 ⇔ カラー化 切り替え（その場でクリック） ── */
+function toggleCardVisual(num){
+  const card=document.getElementById('card-'+num);
+  const btn=document.getElementById('cardToggle-'+num);
+  const isPlain=card.classList.toggle('card-plain');
+  if(isPlain){
+    btn.classList.add('is-plain');
+    btn.textContent='🎨 カラー化 → ⬜ 白文';
+  }else{
+    btn.classList.remove('is-plain');
+    btn.textContent='⬜ 白文 → 🎨 カラー化';
+  }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  loadProgress();buildTagBar();initDashboard();applySavedStatus();updateDashboard();applyFilters();setMode('normal');
+  document.getElementById('modeNormal').addEventListener('click',()=>setMode('normal'));
+  document.getElementById('modeEnglish').addEventListener('click',()=>setMode('english'));
+  document.getElementById('modeBlind').addEventListener('click',()=>setMode('blind'));
+  document.getElementById('modeVisual').addEventListener('click',toggleVisual);
+  document.getElementById('btnShowAll').addEventListener('click',()=>setAllReveal(true));
+  document.getElementById('btnHideAll').addEventListener('click',()=>setAllReveal(false));
+  document.getElementById('btnAll').addEventListener('click',()=>{
+    document.getElementById('searchInput').value='';
+    activeTag='all';
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelector('.tab-btn[data-tag="all"]').classList.add('active');
+    document.body.classList.remove('focusing','mode-english','mode-blind','mode-plain');
+    isVisualMode=false;
+    document.getElementById('modeVisual').classList.remove('visual-active');
+    document.getElementById('modeVisual').textContent='⬜ 白文表示　→　🎨 ビジュアル分析（クリックで切り替え）';
+    document.querySelectorAll('.case-card').forEach(card=>{
+      card.classList.remove('card-plain');
+      const n=card.id.replace('card-','');
+      const cbtn=document.getElementById('cardToggle-'+n);
+      if(cbtn){cbtn.classList.remove('is-plain');cbtn.textContent='⬜ 白文 → 🎨 カラー化';}
+    });
+    focusedId=null;
+    applyFilters();
+  });
+  document.getElementById('btnShuffle').addEventListener('click',()=>{
+    const cards=[...document.querySelectorAll('.case-card')];
+    const visible=cards.filter(c=>c.style.display!=='none');
+    const pick=visible.sort(()=>Math.random()-0.5).slice(0,3).map(c=>c.id);
+    cards.forEach(c=>{c.style.display=pick.includes(c.id)?'':'none';});
+    document.getElementById('noResults').style.display='none';
+  });
+  document.getElementById('searchInput').addEventListener('input',applyFilters);
+  document.querySelectorAll('.english-text').forEach(el=>{
+    el.addEventListener('click',()=>{
+      if(document.body.classList.contains('mode-blind'))el.classList.toggle('unblurred');
+    });
+  });
+});
+</script>
+</body>
+</html>
